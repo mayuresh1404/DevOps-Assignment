@@ -1,0 +1,29 @@
+name: Test Secrets
+
+on: workflow_dispatch
+
+jobs:
+  test-secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test AWS Secrets
+        run: |
+          echo "AWS Region: ${{ secrets.AWS_REGION }}"
+          echo "AWS Account ID: ${{ secrets.AWS_ACCOUNT_ID }}"
+
+          if [ -z "${{ secrets.AWS_ACCESS_KEY_ID }}" ]; then
+            echo "❌ AWS_ACCESS_KEY_ID is missing"
+            exit 1
+          else
+            echo "✅ AWS_ACCESS_KEY_ID exists"
+          fi
+
+          if [ -z "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ]; then
+            echo "❌ AWS_SECRET_ACCESS_KEY is missing"
+            exit 1
+          else
+            echo "✅ AWS_SECRET_ACCESS_KEY exists"
+          fi
+
+      - name: All secrets verified
+        run: echo "✅ All required secrets are configured!"
